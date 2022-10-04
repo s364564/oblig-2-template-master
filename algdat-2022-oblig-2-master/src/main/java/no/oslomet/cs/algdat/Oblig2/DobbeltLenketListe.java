@@ -36,35 +36,63 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int antall;            // antall noder i listen
     private int endringer;         // antall endringer i listen
 
+    //oppgave 1
     public DobbeltLenketListe() {
         throw new UnsupportedOperationException();
     }
 
+    //oppgave 1
     public DobbeltLenketListe(T[] a) {
         throw new UnsupportedOperationException();
     }
 
-    public Liste<T> subliste(int fra, int til) {
-        throw new UnsupportedOperationException();
-    }
-
+    //oppgave 1
     @Override
     public int antall() {
         throw new UnsupportedOperationException();
     }
 
+    // oppgave 1
     @Override
     public boolean tom() {
         throw new UnsupportedOperationException();
     }
 
+    //oppgave 3
+    public Liste<T> subliste(int fra, int til) {
+        throw new UnsupportedOperationException();
+    }
+    //oppgave 3
     @Override
-    public boolean leggInn(T verdi) {
+    public T hent(int indeks) {
+        throw new UnsupportedOperationException();
+    }
+    //oppgave 3
+    @Override
+    public T oppdater(int indeks, T nyverdi) {
         throw new UnsupportedOperationException();
     }
 
+    // oppgave 5
     @Override
     public void leggInn(int indeks, T verdi) {
+        throw new UnsupportedOperationException();
+    }
+
+    // oppgave 2
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException();
+    }
+
+    public String omvendtString() {
+        throw new UnsupportedOperationException();
+    }
+
+
+    // oppgave 4
+    @Override
+    public boolean leggInn(T verdi) {
         throw new UnsupportedOperationException();
     }
 
@@ -73,20 +101,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public T hent(int indeks) {
-        throw new UnsupportedOperationException();
-    }
+
 
     @Override
     public int indeksTil(T verdi) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public boolean fjern(T verdi) {
@@ -100,15 +121,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void nullstill() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String toString() {
-        throw new UnsupportedOperationException();
-    }
-
-    public String omvendtString() {
         throw new UnsupportedOperationException();
     }
 
