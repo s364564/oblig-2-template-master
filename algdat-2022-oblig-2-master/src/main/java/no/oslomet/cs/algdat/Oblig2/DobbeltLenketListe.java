@@ -38,39 +38,160 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     //oppgave 1
     public DobbeltLenketListe() {
-        throw new UnsupportedOperationException();
+        hode = null;
+        antall = 0;
+        hale = null;
+        endringer = 0;
     }
 
     //oppgave 1
     public DobbeltLenketListe(T[] a) {
-        throw new UnsupportedOperationException();
-    }
+        int i =0;
+        for (; i < a.length && a[i] == null; i++);
 
+        if (i<a.length){
+            Node<T> p = hode = new Node <> (a[i], null, null);
+            antall =1;
+
+            for (i++; i <a.length; i++){
+                if (a[i] != null){
+                    Node <T> q = new Node <>(a[i],p,null);
+                    p.neste =q;
+                    p=q;
+                    antall++;
+                }
+            }
+            hale = p;
+        }
+
+    }
     //oppgave 1
     @Override
     public int antall() {
-        throw new UnsupportedOperationException();
+        return antall;                               // returnerer antallet
     }
 
     // oppgave 1
     @Override
     public boolean tom() {
+        return (antall == 0 && hode == null && hale == null);           // listen er tom hvis antall er 0
+    }
+
+    // oppgave 2
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException();
+    }
+    // oppgave 2
+    public String omvendtString() {
         throw new UnsupportedOperationException();
     }
 
-    //oppgave 3
-    public Liste<T> subliste(int fra, int til) {
+    //oppgave 2
+    @Override
+    public boolean leggInn(T verdi) {
         throw new UnsupportedOperationException();
     }
-    //oppgave 3
+
+    // Hjelpemetode 1
+    private Node<T> finnNode(int indeks) {
+
+        Node<T> p = null;
+
+        //sjekker om indeksen er nærmere hode eller hale
+        //hvis indeksen er nærmerer til hode
+        if (indeks < antall / 2) {
+            p = hode; // p blir til hode før for-løkke
+            for (int i = 0; i < indeks; i++) {  // for-løkke starter fra hode og går gjennom listen
+                p = p.neste;
+            }
+        } else // hvis indeksen er nærmerer til halen.
+        {
+            p = hale; // p blir halen før for-løkke
+            for (int i = antall - 1; i > indeks; i--) { // for-løkke starter fra halen og går gjennom listen
+                p = p.forrige;
+            }
+        }
+        return p;   // returnerer node fra ønsket indeks
+    }
+    //hjelpemetode 2
+    private static void fratilKontroll(int antall, int fra, int til) {
+
+        if (fra < 0) {          // fra er negativ
+            throw new IndexOutOfBoundsException("fra(" + fra + ") er negativ!");
+        }
+
+        else if(antall < til) {       // til er utenfor tabellen
+            throw new IndexOutOfBoundsException("til(" + til + ") > antall(" + antall + ")");
+        }
+        else if (til < fra) {       // fra er større enn til
+            throw new IllegalArgumentException("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
+        }
+    }
+    // oppgave 3
     @Override
     public T hent(int indeks) {
-        throw new UnsupportedOperationException();
+
+        indeksKontroll(indeks, false);
+
+        Node<T> s = finnNode(indeks);
+        return s.verdi;
     }
-    //oppgave 3
+
+    //oppgave 3a
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, false);
+
+        if (nyverdi == null) throw new NullPointerException("Ikke tillatt med null som verdi");
+        Node<T> n = finnNode(indeks);
+        T gammelVerdi = n.verdi;
+        n.verdi = nyverdi;
+        endringer ++;
+        return gammelVerdi;
+    }
+
+    //oppgave 3b
+    public Liste<T> subliste(int fra, int til) {
+        fratilKontroll(antall, fra, til);
+        DobbeltLenketListe<T> subliste = new DobbeltLenketListe<>();
+
+
+        //Går inn i hode i listen, med finnNode, med indeks = fra.
+        //Legger til verdiene fra nodene i listen inn i sublisten, helt til "til"
+
+        Node <T> r = finnNode(fra);
+
+        for (int i = 0 ; i < (til - fra) ; i++){
+            subliste.leggInn((T) r.verdi);
+            r = r.neste;
+        }
+
+        return subliste;
+    }
+
+    //oppgave 4
+    @Override
+    public boolean inneholder(T verdi) {
+        return indeksTil(verdi) != -1;
+    }
+
+
+//oppgave 4
+    @Override
+    public int indeksTil(T verdi) {
+        //Kilde kode fra kompediet: Kapittel 3: Dobbelt lenket liste
+        if (verdi == null) {
+            return -1;
+        }
+        Node<T> p = hode;
+        for (int i = 0; i < antall; i++, p = p.neste) {
+            if (p.verdi.equals(verdi)) {
+                return i;
+            }
+        }
+        return -1;
+
     }
 
     // oppgave 5
@@ -79,41 +200,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new UnsupportedOperationException();
     }
 
-    // oppgave 2
-    @Override
-    public String toString() {
-        throw new UnsupportedOperationException();
-    }
 
-    public String omvendtString() {
-        throw new UnsupportedOperationException();
-    }
-
-
-    // oppgave 4
-    @Override
-    public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean inneholder(T verdi) {
-        throw new UnsupportedOperationException();
-    }
-
-
-
-    @Override
-    public int indeksTil(T verdi) {
-        throw new UnsupportedOperationException();
-    }
-
-
+    //oppgave 6
     @Override
     public boolean fjern(T verdi) {
         throw new UnsupportedOperationException();
     }
 
+    //oppgave 6
     @Override
     public T fjern(int indeks) {
         throw new UnsupportedOperationException();
