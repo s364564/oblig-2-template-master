@@ -98,10 +98,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         Node<T> p = null;
 
-        //sjekker om indeksen er nærmere hode eller hale
-        //hvis indeksen er nærmerer til hode
-        if (indeks < antall / 2) {
-            p = hode; // p blir til hode før for-løkke
+        if (indeks < antall / 2) {        //sjekker om indeksen er nærmere hode eller hale
+                                                    // hvis indeksen er nærmerer til hode
+            p = hode;                       // p blir til hode før for-løkke
             for (int i = 0; i < indeks; i++) {  // for-løkke starter fra hode og går gjennom listen
                 p = p.neste;
             }
@@ -141,7 +140,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     //oppgave 3a
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        indeksKontroll(indeks, false);
+        indeksKontroll(indeks, false); // false: indeks = antall er ulovelig
 
         if (nyverdi == null) throw new NullPointerException("Ikke tillatt med null som verdi");
         Node<T> n = finnNode(indeks);
@@ -156,13 +155,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         fratilKontroll(antall, fra, til);
         DobbeltLenketListe<T> subliste = new DobbeltLenketListe<>();
 
+        Node <T> r = finnNode(fra);    //Går inn i hode i listen, med finnNode, med indeks = fra.
 
-        //Går inn i hode i listen, med finnNode, med indeks = fra.
-        //Legger til verdiene fra nodene i listen inn i sublisten, helt til "til"
-
-        Node <T> r = finnNode(fra);
-
-        for (int i = 0 ; i < (til - fra) ; i++){
+        for (int i = 0 ; i < (til - fra) ; i++){     //Legger til verdiene fra nodene i listen inn i sublisten, helt til "til"
             subliste.leggInn((T) r.verdi);
             r = r.neste;
         }
