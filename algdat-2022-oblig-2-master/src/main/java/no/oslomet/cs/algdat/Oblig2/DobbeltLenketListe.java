@@ -5,7 +5,9 @@ package no.oslomet.cs.algdat.Oblig2;
 
 
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -70,7 +72,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean inneholder(T verdi) {
-        throw new UnsupportedOperationException();
+        return indeksTil(verdi) != -1;
     }
 
     @Override
@@ -80,7 +82,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int indeksTil(T verdi) {
-        throw new UnsupportedOperationException();
+        if (verdi == null) return -1;
+
+        Node<T> p = hode;
+
+        for (int i = 0; i < antall; i++, p = p.neste)
+        {
+            if (p.verdi.equals(verdi))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -114,11 +127,26 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks);
+        return new DobbeltLenketListeIterator(indeks);
+    }
+
+    private void indeksKontroll(int indeks)
+    {
+        if (indeks < 0)
+        {
+            throw new IndexOutOfBoundsException("Indeks " +
+                    indeks + " er negativ!");
+        }
+        else if (indeks >= antall)
+        {
+            throw new IndexOutOfBoundsException("Indeks " +
+                    indeks + " >= antall(" + antall + ") noder!");
+        }
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -148,7 +176,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException();
+
         }
 
     } // class DobbeltLenketListeIterator

@@ -1,17 +1,18 @@
 # Obligatorisk oppgave 2 i Algoritmer og Datastrukturer
 
-Denne oppgaven er en innlevering i Algoritmer og Datastrukturer. 
+Denne oppgaven er en innlevering i Algoritmer og Datastrukturer.
 Oppgaven er levert av følgende studenter:
-* Navn Navnesen, S123456, s123456@oslomet.no
-* ...
+* David Thoresen, S364564, s364564@oslomet.no
+* Nasima Josefi, s354388, s354388@oslomet.no
+* Arber Adrian Anadolli, s364553, 364553@oslomet.no
 
 # Arbeidsfordeling
 
 I oppgaven har vi hatt følgende arbeidsfordeling:
-* Per har hatt hovedansvar for oppgave 1, 3, og 5. 
-* Else har hatt hovedansvar for oppgave 2, 4, og 6. 
-* Fatima har hatt hovedansvar for oppgave 7 og 8. 
-* Vi har i fellesskap løst oppgave 10. 
+* David har hatt hovedansvar for oppgave 1, 2, 3, 4.
+* Nasima har hatt hovedansvar for oppgave 5, 6, og 7.
+* Arber har hatt hovedansvar for oppgave 8,9 og 10.
+* Vi sammarbeider på oppgave 10.
 
 # Oppgavebeskrivelse
 
