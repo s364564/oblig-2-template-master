@@ -39,11 +39,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-        throw new UnsupportedOperationException();
     }
 
     public DobbeltLenketListe(T[] a) {
-        throw new UnsupportedOperationException();
     }
 
     public Liste<T> subliste(int fra, int til) {
@@ -72,7 +70,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean inneholder(T verdi) {
-        return indeksTil(verdi) != -1;
+        //Kilde kode fra kompediet: Avsnitt 3.2.2: Programkode 3.2.2 g)
+        return indeksTil(verdi) != -1; //Returnerer true hvis listen inneholder verdi og false ellers
     }
 
     @Override
@@ -82,14 +81,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int indeksTil(T verdi) {
-        if (verdi == null) return -1;
-
-        Node<T> p = hode;
-
-        for (int i = 0; i < antall; i++, p = p.neste)
-        {
-            if (p.verdi.equals(verdi))
-            {
+        //Kilde kode fra kompediet: Avsnitt 3.2.2: Programkode 3.2.2 g)
+        if (verdi == null) return -1; //Hvis verdi er lik 0 returner -1
+        Node<T> p = hode; //Setter p til hode
+        for (int i = 0; i < antall; i++, p = p.neste) { //Går gjennom antall noder og setter p til neste
+            if (p.verdi.equals(verdi)) { //Hvis hode(p) er lik verdien til noden, returneres indeksen
                 return i;
             }
         }
@@ -127,25 +123,23 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
+        //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 e)
         return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
+        //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 e)---
         indeksKontroll(indeks);
         return new DobbeltLenketListeIterator(indeks);
     }
 
-    private void indeksKontroll(int indeks)
-    {
-        if (indeks < 0)
-        {
+    private void indeksKontroll(int indeks) {
+        if (indeks < 0) {
             throw new IndexOutOfBoundsException("Indeks " +
                     indeks + " er negativ!");
         }
-        else if (indeks >= antall)
-        {
-            throw new IndexOutOfBoundsException("Indeks " +
-                    indeks + " >= antall(" + antall + ") noder!");
+        else if (indeks >= antall) {
+            throw new IndexOutOfBoundsException("Indeks " + indeks + " >= antall(" + antall + ") noder!");
         }
     }
 
@@ -155,13 +149,23 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private int iteratorendringer;
 
         private DobbeltLenketListeIterator() {
-            denne = hode;     // p starter på den første i listen
+            denne = hode;     // hode starter på den første i listen
             fjernOK = false;  // blir sann når next() kalles
             iteratorendringer = endringer;  // teller endringer
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+            //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 c)-------
+            indeksKontroll(indeks);
+            hode = finnNode(indeks);
+            fjernOK = false;    // blir sann når next() kalles
+            iteratorendringer = endringer;    // teller endringer
+        }
+        //Kilde kode fra kompediet: Avsnitt 3.3.3: Programkode 3.3.3 a)
+        private Node<T> finnNode(int indeks) {
+            Node<T> p = hode;
+            for (int i = 0; i < indeks; i++) p = p.neste;
+            return p;
         }
 
         @Override
@@ -171,12 +175,22 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-            throw new UnsupportedOperationException();
+            //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 c)
+            if (hode == null) {
+                throw new NoSuchElementException("Ingen flere verdier i listen!");
+            }
+            if (iteratorendringer != endringer) {
+                throw new ConcurrentModificationException("Listen har blitt endret!");
+            }
+            fjernOK = true;
+            T verdi = hode.verdi;       // tar vare på verdien i hode
+            hode = hode.neste;          // flytter hode til neste
+            return verdi;
         }
 
         @Override
         public void remove() {
-
+            throw new UnsupportedOperationException();
         }
 
     } // class DobbeltLenketListeIterator
@@ -186,5 +200,3 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
 } // class DobbeltLenketListe
-
-
