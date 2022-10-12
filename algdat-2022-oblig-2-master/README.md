@@ -40,7 +40,14 @@ Hvis "iteratorendringer" ikke er lik "endringer" så vil det kastes ConcurrentMo
 Så tar vi vare på verdien i hode og flytter hode til neste.
 Til slutt returneres verdi.
 
-I oppgave 9 så gikk vi frem ved å 
+I oppgave 9 så gikk vi frem ved å lage en if setning.
+Hvis "fjernOk" er false vil det kastes et NoSuchElementException untak.
+Hvis "iteratorendringer" ikke er lik "endringer" så vil det kastes ConcurrentModificationException untak.
+Hvis "antall" er lik 1, altså hvis det bare er en node, så settes hode og hale til null.
+Ellers hvis "hode" er tom så fjernes den siste.
+Ellers hvis forrige "hode" er lik hode, så fjernes den første.
+Ellers så fjernes "q".
+Til slutt legger vi på en endring i listen og iteratoren og fjerner en node.
 
 I oppgave 10 så gikk vi frem ved å ...
 
