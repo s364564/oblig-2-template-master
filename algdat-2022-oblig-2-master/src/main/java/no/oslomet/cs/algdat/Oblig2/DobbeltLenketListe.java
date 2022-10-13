@@ -80,17 +80,64 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     // oppgave 2
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+        if (antall == 0) return "[]";           // hvis tabellen er tom returner to klammer
+
+        StringBuilder s = new StringBuilder();
+        Node <T> peker = hode;                  // Node som peker til første node
+        s.append('[');
+
+        while (peker != null && peker !=hale) {
+            s.append(peker.verdi + ", ");
+            peker = peker.neste;
+        }
+
+
+
+        s.append(peker.verdi + "]");            // avslutter med å legge til siste verdi og avsluttende klamme
+        return s.toString();
     }
     // oppgave 2
     public String omvendtString() {
-        throw new UnsupportedOperationException();
+        StringBuilder ut = new StringBuilder("[");
+
+        Node<T> p = hale;      // Setter node p til hale
+        while (p != null) {        // Hvis p er både hale og hode så finnes det kun et element i array
+            if (p == hode) {
+                ut.append(p.verdi);
+            } else {
+                ut.append(p.verdi).append(", ");
+            }
+            p = p.forrige;             // Går fra hale til hode med å sjekke elementet som var før det siste.
+        }
+        ut.append("]");
+
+        return ut.toString();       // Returnerer toString
     }
 
     //oppgave 2
     @Override
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException();
+        Node <T> p = new Node<>(verdi);
+        if(verdi == null){
+            throw new NullPointerException("Verdien kan ikke være null");
+        }
+
+        if ( (hode == null) && (hale == null) ) {      //Hvis listen er tom
+            hode = p;
+            hale = p;
+            antall ++;
+            endringer ++;
+        }
+        else {      //Dersom det finnes en eller flere noder i listen fra før
+            Node q = hale;
+            hale = p;
+            p.forrige = q;
+            q.neste = p;
+            antall ++;
+            endringer ++;
+        }
+
+        return true;
     }
 
     // Hjelpemetode 1
@@ -128,16 +175,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
     }
     // oppgave 3
+    // Kildekode er det samme som i kompendiet: Avsnitt 3.3.3: klassens øvrige metoder
     @Override
     public T hent(int indeks) {
 
         indeksKontroll(indeks, false);
-
-        Node<T> s = finnNode(indeks);
-        return s.verdi;
+        return finnNode(indeks).verdi;
     }
 
     //oppgave 3a
+    // Kildekode er det samme som i kompendiet: Avsnitt 3.3.3: klassens øvrige metoder
     @Override
     public T oppdater(int indeks, T nyverdi) {
         indeksKontroll(indeks, false); // false: indeks = antall er ulovelig
@@ -199,13 +246,83 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     //oppgave 6
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+        if(verdi == null) {    //sjekker om verdi er null
+            return false;
+        }
+
+        Node <T> q = hode, p = null;    //hjelpe-pekere
+
+        while (q != null) {   //bruke q til å finne verdien T
+
+            if (q.verdi.equals(verdi)) {
+                break;
+            }
+            p = q;
+            q = q.neste;
+        }
+
+        if (q == null) {   //fant ikke verdi i listen
+            return false;
+
+        } else if (q == hode) {
+            hode = hode.neste;
+
+        } else {           //Verdien ligger mellom hode og hale
+            p.neste = q.neste;
+
+        } if (q == hale){     // om q er siste element, setter halen før q
+            hale = p;
+        } else {
+            q.neste.forrige = p;
+        }
+
+        q.verdi = null;    //nuller q sine pekere
+        q.neste = null;
+        q.forrige = null;
+
+        antall--;          // Antall reduseres, endringer oppdateres, og p verdi blir returnert
+        endringer++;
+
+        return true;
     }
 
     //oppgave 6
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks,false);
+
+        Node<T> p;
+
+        if (antall == 1) {   // er antallet lik 1, er p hode og hode,halle er null
+            p = hode;
+            hode = null;
+            hale = null;
+
+        } else if (indeks == 0) {   // Første noden fjernes ved å sette hode sin forrige på "null" og oppdatere hode til å bli hode sin neste.
+            p = hode;
+            hode = hode.neste;
+            hode.forrige = null;
+
+        } else if (indeks == antall-1) {  // Siste noden fjernes ved å sette hale sin neste på "null"
+            p = hale;                               // og oppdatere hale til å bli hale sin forrige, altså siste elementet.
+            hale = hale.forrige;
+            hale.neste = null;
+
+        } else {
+            Node<T> q = hode;                   // fjerner en node og bruker for-løkke for å oppdatere node q
+            for (int i = 0; i < indeks -1; i++) {
+                q = q.neste;
+            }
+            p = q.neste;
+
+            q.neste = q.neste.neste;     //   // Oppdaterer pekere
+            q.neste.forrige = q;
+
+        }
+
+        antall--;              // Antall reduseres, endringer oppdateres, og p verdi blir returnert
+        endringer++;
+        return p.verdi;
     }
 
     @Override
