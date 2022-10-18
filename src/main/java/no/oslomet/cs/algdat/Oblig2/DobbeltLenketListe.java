@@ -5,7 +5,9 @@ package no.oslomet.cs.algdat.Oblig2;
 
 
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -222,18 +224,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 //oppgave 4
     @Override
     public int indeksTil(T verdi) {
-        //Kilde kode fra kompediet: Kapittel 3: Dobbelt lenket liste
-        if (verdi == null) {
-            return -1;
-        }
-        Node<T> p = hode;
-        for (int i = 0; i < antall; i++, p = p.neste) {
-            if (p.verdi.equals(verdi)) {
+        //Kilde kode fra kompediet: Avsnitt 3.2.2: Programkode 3.2.2 g)
+        if (verdi == null) return -1; //Hvis verdi er lik 0 returner -1
+        Node<T> p = hode; //Setter p til hode
+        for (int i = 0; i < antall; i++, p = p.neste) { //Går gjennom antall noder og setter p til neste
+            if (p.verdi.equals(verdi)) { //Hvis hode(p) er lik verdien til noden, returneres indeksen
                 return i;
             }
         }
         return -1;
-
     }
 
     // oppgave 5
@@ -332,7 +331,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
@@ -351,7 +350,22 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+            //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 c)-------
+            indeksKontroll(indeks);
+            hode = finnNode(indeks);
+            fjernOK = false;    // blir sann når next() kalles
+            iteratorendringer = endringer;    // teller endringer
+        }
+        //Kilde kode fra kompediet: Avsnitt 3.2.1: hjelpemetode
+        private void indeksKontroll(int indeks) {
+            if (indeks < 0) {
+                throw new IndexOutOfBoundsException("Indeks " +
+                        indeks + " er negativ!");
+            }
+            else if (indeks >= antall) {
+                throw new IndexOutOfBoundsException("Indeks " +
+                        indeks + " >= antall(" + antall + ") noder!");
+            }
         }
 
         @Override
@@ -361,12 +375,52 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-            throw new UnsupportedOperationException();
+            //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 c)
+            if (iteratorendringer != endringer) {
+                throw new ConcurrentModificationException("Listen har blitt endret!");
+            }
+            if (hode == null) {
+                throw new NoSuchElementException("Ingen flere verdier i listen!");
+            }
+            fjernOK = true;
+            T verdi = hode.verdi;       // tar vare på verdien i hode
+            hode = hode.neste;          // flytter hode til neste
+            return verdi;
         }
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException();
+            //Kilde kode fra kompediet: Avsnitt 3.3.4: Programkode 3.3.4 d)
+            if (!fjernOK) {
+                throw new IllegalStateException("Kan ikke fjerne en verdi nå!");
+            }
+            if (iteratorendringer != endringer) {
+                throw new ConcurrentModificationException("Listen har blitt endret!");
+            }
+            fjernOK = false;
+            Node<T> q = hode;
+            if (antall == 1) { // bare en node i listen
+                hode = hale = null;
+            }
+            else if (denne == null) { // den siste skal fjernes
+                q = hale;
+                hale = hale.forrige;
+                hale.neste = null;
+            }
+            else if (denne.forrige == hode) { // den første skal fjernes
+                hode = hode.neste;
+                hode.forrige = null;
+            }
+            else {
+                q = hode.forrige;  // q skal fjernes
+                q.forrige.neste = q.neste;
+                q.neste.forrige = q.forrige;
+            }
+            q.verdi = null;              // for resirkulering
+            q.forrige = q.neste = null;  // for resirkulering
+            antall--;             // en node mindre i listen
+            endringer++;          // en endring i listen
+            iteratorendringer++;  // en endring i iteratoren
         }
 
     } // class DobbeltLenketListeIterator
