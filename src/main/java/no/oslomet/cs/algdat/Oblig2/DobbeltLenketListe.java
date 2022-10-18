@@ -48,18 +48,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     //oppgave 1
     public DobbeltLenketListe(T[] a) {
-        int i =0;
-        for (; i < a.length && a[i] == null; i++);
+        int i = 0;
+        for (; i < a.length && a[i] == null; i++) ;
 
-        if (i<a.length){
-            Node<T> p = hode = new Node <> (a[i], null, null);
-            antall =1;
+        if (i < a.length) {
+            Node<T> p = hode = new Node<>(a[i], null, null);
+            antall = 1;
 
-            for (i++; i <a.length; i++){
-                if (a[i] != null){
-                    Node <T> q = new Node <>(a[i],p,null);
-                    p.neste =q;
-                    p=q;
+            for (i++; i < a.length; i++) {
+                if (a[i] != null) {
+                    Node<T> q = new Node<>(a[i], p, null);
+                    p.neste = q;
+                    p = q;
                     antall++;
                 }
             }
@@ -67,6 +67,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
     }
+
     //oppgave 1
     @Override
     public int antall() {
@@ -85,19 +86,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if (antall == 0) return "[]";           // hvis tabellen er tom returner to klammer
 
         StringBuilder s = new StringBuilder();
-        Node <T> peker = hode;                  // Node som peker til første node
+        Node<T> peker = hode;                  // Node som peker til første node
         s.append('[');
 
-        while (peker != null && peker !=hale) {
+        while (peker != null && peker != hale) {
             s.append(peker.verdi + ", ");
             peker = peker.neste;
         }
 
 
-
         s.append(peker.verdi + "]");            // avslutter med å legge til siste verdi og avsluttende klamme
         return s.toString();
     }
+
     // oppgave 2
     public String omvendtString() {
         StringBuilder ut = new StringBuilder("[");
@@ -119,24 +120,23 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     //oppgave 2
     @Override
     public boolean leggInn(T verdi) {
-        Node <T> p = new Node<>(verdi);
-        if(verdi == null){
+        Node<T> p = new Node<>(verdi);
+        if (verdi == null) {
             throw new NullPointerException("Verdien kan ikke være null");
         }
 
-        if ( (hode == null) && (hale == null) ) {      //Hvis listen er tom
+        if ((hode == null) && (hale == null)) {      //Hvis listen er tom
             hode = p;
             hale = p;
-            antall ++;
-            endringer ++;
-        }
-        else {      //Dersom det finnes en eller flere noder i listen fra før
+            antall++;
+            endringer++;
+        } else {      //Dersom det finnes en eller flere noder i listen fra før
             Node q = hale;
             hale = p;
             p.forrige = q;
             q.neste = p;
-            antall ++;
-            endringer ++;
+            antall++;
+            endringer++;
         }
 
         return true;
@@ -148,7 +148,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         Node<T> p = null;
 
         if (indeks < antall / 2) {        //sjekker om indeksen er nærmere hode eller hale
-                                                    // hvis indeksen er nærmerer til hode
+            // hvis indeksen er nærmerer til hode
             p = hode;                       // p blir til hode før for-løkke
             for (int i = 0; i < indeks; i++) {  // for-løkke starter fra hode og går gjennom listen
                 p = p.neste;
@@ -162,20 +162,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
         return p;   // returnerer node fra ønsket indeks
     }
+
     //hjelpemetode 2
     private static void fratilKontroll(int antall, int fra, int til) {
 
         if (fra < 0) {          // fra er negativ
             throw new IndexOutOfBoundsException("fra(" + fra + ") er negativ!");
-        }
-
-        else if(antall < til) {       // til er utenfor tabellen
+        } else if (antall < til) {       // til er utenfor tabellen
             throw new IndexOutOfBoundsException("til(" + til + ") > antall(" + antall + ")");
-        }
-        else if (til < fra) {       // fra er større enn til
+        } else if (til < fra) {       // fra er større enn til
             throw new IllegalArgumentException("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
         }
     }
+
     // oppgave 3
     // Kildekode er det samme som i kompendiet: Avsnitt 3.3.3: klassens øvrige metoder
     @Override
@@ -195,7 +194,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         Node<T> n = finnNode(indeks);
         T gammelVerdi = n.verdi;
         n.verdi = nyverdi;
-        endringer ++;
+        endringer++;
         return gammelVerdi;
     }
 
@@ -204,9 +203,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         fratilKontroll(antall, fra, til);
         DobbeltLenketListe<T> subliste = new DobbeltLenketListe<>();
 
-        Node <T> r = finnNode(fra);    //Går inn i hode i listen, med finnNode, med indeks = fra.
+        Node<T> r = finnNode(fra);    //Går inn i hode i listen, med finnNode, med indeks = fra.
 
-        for (int i = 0 ; i < (til - fra) ; i++){     //Legger til verdiene fra nodene i listen inn i sublisten, helt til "til"
+        for (int i = 0; i < (til - fra); i++) {     //Legger til verdiene fra nodene i listen inn i sublisten, helt til "til"
             subliste.leggInn((T) r.verdi);
             r = r.neste;
         }
@@ -221,7 +220,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
 
-//oppgave 4
+    //oppgave 4
     @Override
     public int indeksTil(T verdi) {
         //Kilde kode fra kompediet: Avsnitt 3.2.2: Programkode 3.2.2 g)
@@ -237,19 +236,48 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     // oppgave 5
     @Override
+    //Kilde kode fra kompediet: Kapittel 3: Dobbelt lenket liste Programkode 3.3.2 g)
     public void leggInn(int indeks, T verdi) {
-        throw new UnsupportedOperationException();
-    }
+        nullSjekk(verdi);
 
+        if (indeks < 0) {
+            throw new IndexOutOfBoundsException("Indeks " +
+                    indeks + " er negativ!");
+        } else if (indeks > antall) {
+            throw new IndexOutOfBoundsException("Indeks " +
+                    indeks + " > antall(" + antall + ") noder!");
+        } else if (antall == 0)  // tom liste
+        {
+            hode = hale = new Node<>(verdi, null, null);
+        } else if (indeks == 0)  // ny verdi forrest
+        {
+            hode = hode.forrige = new Node<>(verdi, null, hode);
+        } else if (indeks == antall)  // ny verdi bakerst
+        {
+            hale = hale.neste = new Node<>(verdi, hale, null);
+        } else {
+            Node<T> p = finnNode(indeks);  // ny verdi til venstre for p
+            p.forrige = p.forrige.neste = new Node<>(verdi, p.forrige, p);
+        }
+
+        antall++;      // ny verdi i listen
+        endringer++;   // en endring i listen
+
+    }
+    //Kilde kode fra kompediet: Avsnitt 3.2.1: hjelpemetode
+    private static <T> void nullSjekk(T verdi) {
+        if (verdi == null) throw
+                new NullPointerException("Ikke tillatt med null-verdier!");
+    }
 
     //oppgave 6
     @Override
     public boolean fjern(T verdi) {
-        if(verdi == null) {    //sjekker om verdi er null
+        if (verdi == null) {    //sjekker om verdi er null
             return false;
         }
 
-        Node <T> q = hode, p = null;    //hjelpe-pekere
+        Node<T> q = hode, p = null;    //hjelpe-pekere
 
         while (q != null) {   //bruke q til å finne verdien T
 
@@ -269,7 +297,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         } else {           //Verdien ligger mellom hode og hale
             p.neste = q.neste;
 
-        } if (q == hale){     // om q er siste element, setter halen før q
+        }
+        if (q == hale) {     // om q er siste element, setter halen før q
             hale = p;
         } else {
             q.neste.forrige = p;
@@ -288,7 +317,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     //oppgave 6
     @Override
     public T fjern(int indeks) {
-        indeksKontroll(indeks,false);
+        indeksKontroll(indeks, false);
 
         Node<T> p;
 
@@ -302,14 +331,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             hode = hode.neste;
             hode.forrige = null;
 
-        } else if (indeks == antall-1) {  // Siste noden fjernes ved å sette hale sin neste på "null"
+        } else if (indeks == antall - 1) {  // Siste noden fjernes ved å sette hale sin neste på "null"
             p = hale;                               // og oppdatere hale til å bli hale sin forrige, altså siste elementet.
             hale = hale.forrige;
             hale.neste = null;
 
         } else {
             Node<T> q = hode;                   // fjerner en node og bruker for-løkke for å oppdatere node q
-            for (int i = 0; i < indeks -1; i++) {
+            for (int i = 0; i < indeks - 1; i++) {
                 q = q.neste;
             }
             p = q.neste;

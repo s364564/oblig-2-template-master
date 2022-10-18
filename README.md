@@ -31,7 +31,12 @@ Deretter går vi gjennom antall noder og setter p til "neste".
 Hvis verdi av p er lik "verdi", så returnerer den indeksen.
 I inneholder metoden så returnes true hvis listen inneholder verdi og false ellers.
 
-I oppgave 5 så gikk vi frem ved å ...
+I oppgave 5 så gikk vi frem ved å lage en if setning som sjekker om verdien metoden tar inn er gyldig.
+Dersom vi får null, kastes det en feilmelding. Metoden tar inn 2 parametere, en indeks
+og en verdi. Int indeks bestemmer indeksen verdien kommer til å legges inn i. Metoden bruker
+if setninger for å først sjekke om indeks er 0, dersom indeks er 0, vil verdien legges inn først. Den andre 
+if setningen sjekker om indeksen er antall, dersom indeks == antall vil verdien legges inn på slutten.
+Og hvis indeks er ikke den første eller den siste verdien vil else setningen ta vare på resten. 
 
 I oppgave 6 så gikk vi frem ved å ...
 
