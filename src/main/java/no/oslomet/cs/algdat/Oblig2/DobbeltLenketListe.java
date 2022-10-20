@@ -48,6 +48,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     //oppgave 1
     public DobbeltLenketListe(T[] a) {
+        this.hode = null;
+        this.hale = null;
+
         int i = 0;
         for (; i < a.length && a[i] == null; i++) ;
 
@@ -278,31 +281,33 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             return false;
         }
 
-        Node<T> q = hode, p = null;    //hjelpe-pekere
+        Node<T> q = hode;    //hjelpe-pekere
 
         while (q != null) {   //bruke q til å finne verdien T
 
             if (q.verdi.equals(verdi)) {
                 break;
             }
-            p = q;
             q = q.neste;
         }
-
-        if (q == null) {   //fant ikke verdi i listen
+        if (q == null) {
             return false;
-
-        } else if (q == hode) {
-            hode = hode.neste;
-
-        } else {           //Verdien ligger mellom hode og hale
-            p.neste = q.neste;
-
         }
-        if (q == hale) {     // om q er siste element, setter halen før q
-            hale = p;
+        else if(antall == 1) {
+            hode = null;
+            hale = null;
+        }
+
+        else if (q == hode) {
+            hode = hode.neste;
+            hode.forrige = null;
+        }
+        else if (q == hale) {     // om q er siste element, setter halen før q
+            hale = hale.forrige;
+            hale.neste = null;
         } else {
-            q.neste.forrige = p;
+            q.forrige.neste = q.neste;
+            q.neste.forrige = q.forrige;
         }
 
         q.verdi = null;    //nuller q sine pekere
@@ -318,40 +323,37 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     //oppgave 6
     @Override
     public T fjern(int indeks) {
-        indeksKontroll(indeks, false);
+        indeksKontroll(indeks,false);
 
-        Node<T> p;
+        Node<T> p = hode;
 
         if (antall == 1) {   // er antallet lik 1, er p hode og hode,halle er null
-            p = hode;
             hode = null;
             hale = null;
 
-        } else if (indeks == 0) {   // Første noden fjernes ved å sette hode sin forrige på "null" og oppdatere hode til å bli hode sin neste.
-            p = hode;
+        }
+        else if (indeks == 0) {   // Første noden fjernes ved å sette hode sin forrige på "null" og oppdatere hode til å bli hode sin neste.
             hode = hode.neste;
             hode.forrige = null;
 
-        } else if (indeks == antall - 1) {  // Siste noden fjernes ved å sette hale sin neste på "null"
+        } else if (indeks == antall-1) {  // Siste noden fjernes ved å sette hale sin neste på "null"
             p = hale;                               // og oppdatere hale til å bli hale sin forrige, altså siste elementet.
             hale = hale.forrige;
             hale.neste = null;
 
         } else {
-            Node<T> q = hode;                   // fjerner en node og bruker for-løkke for å oppdatere node q
-            for (int i = 0; i < indeks - 1; i++) {
-                q = q.neste;
-            }
-            p = q.neste;
-
-            q.neste = q.neste.neste;     //   // Oppdaterer pekere
-            q.neste.forrige = q;
-
+            p = finnNode(indeks);// fjerner en node og bruker for-løkke for å oppdatere node q
+            p.forrige.neste = p.neste;
+            p.neste.forrige = p.forrige;
         }
+        T nodeVerdi = p.verdi;
+        p.verdi = null;
+        p.forrige = null;
+        p.neste = null;
 
         antall--;              // Antall reduseres, endringer oppdateres, og p verdi blir returnert
         endringer++;
-        return p.verdi;
+        return nodeVerdi;
     }
 
     @Override
@@ -379,7 +381,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, false);
+        return new  DobbeltLenketListeIterator(indeks);
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -442,23 +445,31 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 throw new ConcurrentModificationException("Listen har blitt endret!");
             }
             fjernOK = false;
-            Node<T> q = hode;
-            if (antall == 1) { // bare en node i listen
-                hode = hale = null;
-            } else if (denne == null) { // den siste skal fjernes
+            Node<T> q;
+
+            if (denne == null) { // den siste skal fjernes
                 q = hale;
+            }
+            else {
+                q = denne.forrige;
+            }
+            if (q == hode) { // den første skal fjernes
+                if (antall == 1) { // bare en node i listen
+                    hode = hale = null;
+                }
+                else {
+                    hode = hode.neste;
+                    hode.forrige = null;
+                }
+            }
+            else if(q == hale) {
                 hale = hale.forrige;
                 hale.neste = null;
-            } else if (denne.forrige == hode) { // den første skal fjernes
-                hode = hode.neste;
-                hode.forrige = null;
-            } else {
-                q = hode.forrige;  // q skal fjernes
+            }
+            else {
                 q.forrige.neste = q.neste;
                 q.neste.forrige = q.forrige;
             }
-            q.verdi = null;              // for resirkulering
-            q.forrige = q.neste = null;  // for resirkulering
             antall--;             // en node mindre i listen
             endringer++;          // en endring i listen
             iteratorendringer++;  // en endring i iteratoren
