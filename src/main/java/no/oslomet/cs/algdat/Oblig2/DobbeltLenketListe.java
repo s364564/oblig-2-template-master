@@ -264,6 +264,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         endringer++;   // en endring i listen
 
     }
+
     //Kilde kode fra kompediet: Avsnitt 3.2.1: hjelpemetode
     private static <T> void nullSjekk(T verdi) {
         if (verdi == null) throw
@@ -354,8 +355,22 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
+    // kildekode husk kilde
     public void nullstill() {
-        throw new UnsupportedOperationException();
+        Node<T> p = hode;
+
+        while (p != null) {
+            Node<T> q = p.neste;
+
+            p.neste = null;     // for resirkulering
+            p.forrige = null;   // for resirkulering
+            p.verdi = null;     // for resirkulering
+
+            p = q;
+        }
+
+        antall = 0;
+        hode = hale = null;
     }
 
     @Override
@@ -385,13 +400,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             fjernOK = false;    // blir sann når next() kalles
             iteratorendringer = endringer;    // teller endringer
         }
+
         //Kilde kode fra kompediet: Avsnitt 3.2.1: hjelpemetode
         private void indeksKontroll(int indeks) {
             if (indeks < 0) {
                 throw new IndexOutOfBoundsException("Indeks " +
                         indeks + " er negativ!");
-            }
-            else if (indeks >= antall) {
+            } else if (indeks >= antall) {
                 throw new IndexOutOfBoundsException("Indeks " +
                         indeks + " >= antall(" + antall + ") noder!");
             }
@@ -430,17 +445,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             Node<T> q = hode;
             if (antall == 1) { // bare en node i listen
                 hode = hale = null;
-            }
-            else if (denne == null) { // den siste skal fjernes
+            } else if (denne == null) { // den siste skal fjernes
                 q = hale;
                 hale = hale.forrige;
                 hale.neste = null;
-            }
-            else if (denne.forrige == hode) { // den første skal fjernes
+            } else if (denne.forrige == hode) { // den første skal fjernes
                 hode = hode.neste;
                 hode.forrige = null;
-            }
-            else {
+            } else {
                 q = hode.forrige;  // q skal fjernes
                 q.forrige.neste = q.neste;
                 q.neste.forrige = q.forrige;
