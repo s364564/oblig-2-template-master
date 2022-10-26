@@ -23,7 +23,11 @@ I oppgave ble først antall variabel returnert i antall metoden og boolean metod
 Lager så konstruktøren for dobbeltlenketliste, som skal opprette en dobbeltlenketliste med verdier fra tabellen a. 
 i tilegg vi variablen antall øke for hvert element som legges inn i listen fra tabellen. 
 
-I oppgave 2 så gikk vi frem ved å ...
+I oppgave 2 så gikk vi frem ved å lage en toString metode, metoden først sjekker om tabellen er tomt, og deretter danner en ny tegnstreng og legger en [ i tengstrengen.
+Deretter vil metoden sjekke om peker != null eller hale, dersom peker har verdi vil den bli lagt inn i tegnstrengen. På slutten av metoden legger vi inn en ] for å avslutte tegnstrengen.
+Vi også lagde metoden omvendtString som settes i gang på samma måte som toString metoden. Men i denne metoden legger vi inn elementene motsatt vei, fra hale i stedet for hode.
+Metoden leggInn starter med å sjekke om verdiene er null, dersom vi ikke har null verdier sjekker vi om listen er tomt på forhånd. Metoden legger inn verdiene bakerst, og teller antall og endringer. 
+
 
 I oppgave 3 lagde vi hjelpemetoden "finnNode", som skal finne og returnere en node med gitt indeks. 
 for å løse oppgaven brukte vi indekskontroll metoden som sjekker om den gitte indeksen er gyldig.
@@ -59,7 +63,9 @@ Og hvis indeks er ikke den første eller den siste verdien vil else setningen ta
 I oppgave 6 skulle vi fjerne en node fra en gitt indeks. første sjekket vi om indeksen er gydlig, og så gjernet vi det element fra listen. 
 oppdaterte pekere før og etter det element som ble slett. 
 
-I oppgave 7 så gikk vi frem ved å ...
+I oppgave 7 så gikk vi frem ved å lage en metode som sjekker om hode har en verdi, dersom
+hode har en verdi vil metoden fjerne verdier, p blir p.neste og metoden gjentar seg så langt det 
+finnes verdier i p. 
 
 I oppgave 8 så gikk vi frem ved å lage en if setning.
 Hvis "hode" er tom vil det kastes et NoSuchElementException untak.

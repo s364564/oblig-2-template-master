@@ -85,6 +85,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     // oppgave 2
     @Override
+    //
     public String toString() {
         if (antall == 0) return "[]";           // hvis tabellen er tom returner to klammer
 
