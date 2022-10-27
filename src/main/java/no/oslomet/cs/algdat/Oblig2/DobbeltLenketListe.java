@@ -430,8 +430,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 throw new NoSuchElementException("Ingen flere verdier i listen!");
             }
             fjernOK = true;
-            T verdi = hode.verdi;       // tar vare på verdien i hode
-            hode = hode.neste;          // flytter hode til neste
+            T verdi = denne.verdi;       // tar vare på verdien i hode
+            denne = denne.neste;          // flytter hode til neste
             return verdi;
         }
 
