@@ -82,4 +82,8 @@ Ellers hvis forrige "hode" er lik hode, så fjernes den første.
 Ellers så fjernes "q".
 Til slutt legger vi på en endring i listen og iteratoren og fjerner en node.
 
-I oppgave 10 så gikk vi frem ved å ...
+i oppgave 10 tok vi først de to verdiene som vil sammenlige innenfor lokke.
+etterpå skrev vi verdi 1 og verdi 2 i hent-metoden, for å inkludere dem i compare-metoden.
+for oppdatere plasseringene brukte vi oppdater-metoden.
+bruk av bubblesortering er nokså inneffktiv måte å sorter det på, kunne ha brukt f.eks. quicksort.
+synes at bubblesorteringen var nok lettere å forstå og lettere å implimentere det her. 
